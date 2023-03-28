@@ -1,0 +1,88 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.9'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id "org.owasp.dependencycheck" version "8.1.1"
+}
+
+
+group = 'com.dro.pfg'
+version = '0.0.4-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+}
+
+ext {
+    dockerRegistry = 'localhost:5000'
+    cloudConsulVersion = '3.1.2'
+}
+
+dependencies {
+    // Spring-boot starters
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // Spring-cloud starters
+    implementation "org.springframework.cloud:spring-cloud-starter-consul-all:$cloudConsulVersion"
+    implementation "org.springframework.cloud:spring-cloud-starter-consul-config:$cloudConsulVersion"
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+task renameJarForDocker(type: Sync) {
+    from("$buildDir/libs/")
+    into("$buildDir/libs/")
+    include '*.jar'
+    rename { String filename ->
+        filename.replace("-${project.version}.jar", ".jar")
+    }
+}
+
+task copyJarToDockerDir(type: Copy) {
+    from "$buildDir/libs"
+    include "**/${project.name}.jar"
+    into "$buildDir/docker"
+}
+
+task prepareDockerDir(type: Copy) {
+    from "$projectDir/docker"
+    include "**/*"
+    filter { it.replaceAll('<%=name%>', project.name) } // makes Dockerfile more generic
+    into "$buildDir/docker"
+}
+
+task buildDockerImage(type:Exec) {
+    workingDir "$buildDir"
+    commandLine "docker", "build", "--tag", "${dockerRegistry}/${project.name}:latest", "--tag", "${dockerRegistry}/${project.name}:${project.version}", "docker"
+}
+
+task pushDockerImage(type: Exec) {
+    commandLine "docker", "push", "${dockerRegistry}/${project.name}:${project.version}"
+}
+
+copyJarToDockerDir.dependsOn build
+buildDockerImage.dependsOn prepareDockerDir
+copyJarToDockerDir.dependsOn renameJarForDocker
+buildDockerImage.dependsOn copyJarToDockerDir
+pushDockerImage.dependsOn buildDockerImage

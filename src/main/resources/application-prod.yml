@@ -1,0 +1,7 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  cloud:
+    consul:
+      host: host.docker.internal

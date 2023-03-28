@@ -1,0 +1,12 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+  cloud:
+    consul:
+      host: localhost
+
+server:
+  #servlet:
+  #  context-path: /${spring.application.name}
+  port: 8090
