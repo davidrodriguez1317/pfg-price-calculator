@@ -7,7 +7,7 @@ plugins {
 
 
 group = 'com.dro.pfg'
-version = '0.0.4-SNAPSHOT'
+version = '0.0.6-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
@@ -24,7 +24,7 @@ repositories {
 }
 
 ext {
-    dockerRegistry = 'localhost:5000'
+    dockerRegistry = '192.168.50.1:5001'
     cloudConsulVersion = '3.1.2'
 }
 
@@ -35,8 +35,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     // Spring-cloud starters
-    implementation "org.springframework.cloud:spring-cloud-starter-consul-all:$cloudConsulVersion"
-    implementation "org.springframework.cloud:spring-cloud-starter-consul-config:$cloudConsulVersion"
+//    implementation "org.springframework.cloud:spring-cloud-starter-consul-all:$cloudConsulVersion"
+//    implementation "org.springframework.cloud:spring-cloud-starter-consul-config:$cloudConsulVersion"
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'

@@ -1,22 +1,8 @@
 spring:
   application:
     name: price-calculator
-  config:
-    import: "optional:consul:"
-  cloud:
-    consul:
-      port: 8500
-      config:
-        enabled: true
-      discovery:
-        prefer-ip-address: true
-        tags: pricecalculator
-        #healthCheckPath: /${spring.application.name}/actuator/health
-        healthCheckPath: /actuator/health
-        healthCheckInterval: 10s
-        healthCheckTimeout: 20s
-        healthCheckCriticalTimeout: 2m
-        fail-fast: true
+#  config:
+#    import: "optional:consul:"
 
 app:
   default-currency: "EUR"
