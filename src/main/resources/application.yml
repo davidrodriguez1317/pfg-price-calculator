@@ -1,8 +1,19 @@
 spring:
   application:
     name: price-calculator
-#  config:
-#    import: "optional:consul:"
+  config:
+    import: "optional:consul:"
+  cloud:
+    consul:
+      discovery:
+        healthCheckPath: /actuator/health
+        healthCheckInterval: 20s
+        healthCheckTimeout: 50s
+
+server:
+  port: 8080
+  #context-path: /${spring.application.name}
 
 app:
   default-currency: "EUR"
+

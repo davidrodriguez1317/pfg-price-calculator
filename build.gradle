@@ -7,7 +7,7 @@ plugins {
 
 
 group = 'com.dro.pfg'
-version = '0.0.6-SNAPSHOT'
+version = '0.0.2-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
@@ -35,8 +35,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     // Spring-cloud starters
-//    implementation "org.springframework.cloud:spring-cloud-starter-consul-all:$cloudConsulVersion"
-//    implementation "org.springframework.cloud:spring-cloud-starter-consul-config:$cloudConsulVersion"
+    implementation "org.springframework.cloud:spring-cloud-starter-consul-all:$cloudConsulVersion"
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PriceService {
 
-    //private final DeliveryCostService deliveryCostService;
+    private final DeliveryCostService deliveryCostService;
 
     private final PriceRepository priceRepository;
 
@@ -23,21 +23,20 @@ public class PriceService {
 
     public PriceDto getProductById(String currency, String id) {
 
-//        String defaultCurrency = appProperties.getDefaultCurrency();
-//        log.info("Default currency: {}", defaultCurrency);
-//
-//        DeliveryCostDto deliveryCost = deliveryCostService.getDeliverCostFromId(currency, id);
-//        log.info("Delivery cost por product with id {} and currency {}: {}", id, currency, deliveryCost);
-//
-//        PriceEntity priceEntity = priceRepository.getPriceByIdAndCurrency(defaultCurrency, id);
-//        log.info("Price from db for product with id {} and currency {}: {}", id, currency, priceEntity);
-//
-//        return PriceDto.builder()
-//                .id(id)
-//                .currency(currency)
-//                .price(priceEntity.getPrice())
-//                .deliveryCost(deliveryCost.getDeliveryCost())
-//                .build();
-    return null;
+        String defaultCurrency = appProperties.getDefaultCurrency();
+        log.info("Default currency: {}", defaultCurrency);
+
+        DeliveryCostDto deliveryCost = deliveryCostService.getDeliverCostFromId(currency, id);
+        log.info("Delivery cost por product with id {} and currency {}: {}", id, currency, deliveryCost);
+
+        PriceEntity priceEntity = priceRepository.getPriceByIdAndCurrency(defaultCurrency, id);
+        log.info("Price from db for product with id {} and currency {}: {}", id, currency, priceEntity);
+
+        return PriceDto.builder()
+                .id(id)
+                .currency(currency)
+                .price(priceEntity.getPrice())
+                .deliveryCost(deliveryCost.getDeliveryCost())
+                .build();
     }
 }
