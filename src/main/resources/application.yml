@@ -11,7 +11,7 @@ spring:
         healthCheckTimeout: 50s
 
 server:
-  port: 8080
+  port: 8090
 
 app:
   default-currency: "EUR"
